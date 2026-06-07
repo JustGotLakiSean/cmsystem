@@ -1,0 +1,41 @@
+Doctor schema - defines as a medical professional who can diagnose and treat patients
+- firstName
+- lastName
+- email (unique)
+- username (unique)
+- password
+- contactNumber
+- specialty
+- active (default: true)
+
+Patient Schema: defines as an individual seeking medical care
+- firstname
+- lastname
+- email (unique)
+- username (unique)
+- password
+- contactNumber
+- dateOfBirth
+- medicalHistory
+- active (default: true)
+
+Appointment Schema: defines as a scheduled meeting between a doctor and a patient for medical consultation
+- doctor (reference to Doctor)
+- patient (reference to Patient)
+- appointmentDate
+- reason
+- status (scheduled, completed, cancelled)
+
+Diagnosis Schema: Diagnosis defined as a medical condition identified during an appointment
+- appointment (reference to Appointment)
+- diagnosisDetails
+- prescribedTreatment
+- followUpDate (optional)
+
+Prescription Schema: defines as a medication order prescribed by a doctor for a patient based on a diagnosis
+- diagnosis (reference to Diagnosis)
+- medicationName
+- dosage
+- frequency
+- duration
+- notes (optional)
