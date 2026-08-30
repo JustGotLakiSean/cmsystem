@@ -125,7 +125,7 @@ exports.deactivateDoctor = async (req, res) => {
         const deactivateDoctor = await Doctor.findByIdAndUpdate(
             req.params.id,
             { active: false },
-            { new: true }
+            { returnDocument: after }
         ).select("-password")
 
         if(!deactivateDoctor) {
