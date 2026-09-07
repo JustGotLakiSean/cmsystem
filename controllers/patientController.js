@@ -110,7 +110,7 @@ exports.updatePatient = async ( req, res ) => {
 
         // check if patient exists
         if(!updatedPatient) {
-            return res.status(404).json({ message: "Patient nor found" })
+            return res.status(404).json({ message: "Patient not found" })
         }
 
         // return response
