@@ -39,3 +39,12 @@ Prescription Schema: defines as a medication order prescribed by a doctor for a 
 - frequency
 - duration
 - notes (optional)
+
+Admin Schema: defines an individual who has full access to Doctors, Patients, Appointments
+- seed
+    - firstname
+    - lastname
+    - email
+    - username
+    - password
+    

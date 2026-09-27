@@ -23,6 +23,9 @@ app.use("/api/diagnoses", diagnosisRoutes)
 const prescriptionRoutes = require("./routes/prescription");
 app.use("/api/prescriptions", prescriptionRoutes);
 
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.error("Could not connect to MongoDB", err));

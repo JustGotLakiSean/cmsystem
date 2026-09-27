@@ -149,3 +149,25 @@ exports.deactivatePatient = async ( req, res ) => {
         res.status(500).json({ message: "Server error", error: error.message })
     }
 }
+
+// get me
+exports.getMe = async ( req, res ) => {
+    try {
+        // get id from req.user.id => from token
+        const patient = await Patient.findById(req.user.id).select("-password");
+
+        // verify if it exist
+        if(!patient) {
+            return res.status(404).json({ message: "Patient not found." });
+        }
+
+        // return success login
+        res.status(200).json({
+            message: "Profile retrieved successfully",
+            data: patient
+        })
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error.", error: error.message })
+    }
+}

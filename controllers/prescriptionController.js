@@ -46,7 +46,7 @@ exports.readPrescriptions = async (req, res) => {
                 populate: {
                     path: "appointment",
                     populate: [
-                        { path: "doctor", select: "-select" },
+                        { path: "doctor", select: "-password" },
                         { path: "patient", select: "-password" }
                     ]
                 }

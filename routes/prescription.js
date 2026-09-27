@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authMiddleware, requireRole } = require("../middleware/authMiddleware.js");
 
 const {
     createPrescription,
@@ -7,8 +8,8 @@ const {
     readOnePrescription
 } = require("../controllers/prescriptionController.js");
 
-router.post("/", createPrescription);
-router.get("/", readPrescriptions);
-router.get("/:id", readOnePrescription)
+router.post("/", authMiddleware, requireRole(["doctor"]), createPrescription);
+router.get("/", authMiddleware, requireRole(["doctor"]), readPrescriptions);
+router.get("/:id", authMiddleware, requireRole(["doctor", "patient"]), readOnePrescription)
 
 module.exports = router;
