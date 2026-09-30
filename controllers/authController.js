@@ -36,7 +36,7 @@ exports.loginAdmin = async ( req, res ) => {
 
         // return token
         res.status(200).json({
-            message: "Login successful",
+            message: "Login successful.",
             token
         })
 
@@ -77,7 +77,7 @@ exports.loginDoctor = async ( req, res ) => {
 
         // return token
         res.status(200).json({
-            message: "Login successful",
+            message: "Login successful.",
             token
         })
 
@@ -117,7 +117,7 @@ exports.loginPatient = async ( req, res ) => {
         )
 
         res.status(200).json({
-            message: "Login successful",
+            message: "Login successful.",
             token
         })
 

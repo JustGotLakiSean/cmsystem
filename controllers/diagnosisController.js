@@ -1,5 +1,6 @@
 const Appointment = require("../models/Appointment");
 const Diagnosis = require("../models/Diagnosis")
+const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor")
 
 exports.createDiagnosis = async (req, res) => {
@@ -26,7 +27,7 @@ exports.createDiagnosis = async (req, res) => {
 
         const savedDiagnosis = await diagnosis.save();
         res.status(201).json({
-            message: "Diagnosis saved successfully",
+            message: "Diagnosis saved successfully.",
             data: savedDiagnosis
         });
     } catch (error) {
@@ -47,7 +48,7 @@ exports.readDiagnosis = async (req, res) => {
         })
 
         res.status(200).json({
-            message: "Diagnosis retrieved successfully",
+            message: "Diagnosis retrieved successfully.",
             data: diagnosis
         })
     } catch (error){
@@ -58,6 +59,7 @@ exports.readDiagnosis = async (req, res) => {
 // get one diagnosis
 exports.readOneDiagnosis = async(req, res) => {
     try {
+        // get diagnosis
         const diagnosis = await Diagnosis.findById(req.params.id).populate({
             path: "appointment",
             populate: [
@@ -66,12 +68,22 @@ exports.readOneDiagnosis = async(req, res) => {
             ]
         });
 
+        // check if diagnosis exist
         if(!diagnosis) {
             return res.status(404).json({ message: "Diagnosis not found." })
         }
 
+        // verify role
+        if(req.user.role === "patient" && diagnosis.appointment.patient._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Forbidden access." })
+        }
+
+        if(req.user.role === "doctor" && diagnosis.appointment.doctor._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Forbidden access." })
+        }
+
         res.status(200).json({
-            message: "Diagnosis retrieved successfully",
+            message: "Diagnosis retrieved successfully.",
             data: diagnosis
         })
     } catch (error) {
@@ -101,7 +113,7 @@ exports.updateDiagnosis = async (req, res) => {
         }
 
         res.status(200).json({
-            message: "Diagnosis updated successfully",
+            message: "Diagnosis updated successfully.",
             data: updatedDiagnosis
         })
 

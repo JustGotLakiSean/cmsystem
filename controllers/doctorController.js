@@ -8,19 +8,19 @@ exports.createDoctor = async (req, res) => {
 
         // validate fields
         if( !firstname || !lastname || !email || !username || !password || !contactNumber || !specialty ) {
-            return res.status(400).json({ message: "Missing Required Field" })
+            return res.status(400).json({ message: "Missing field required." })
         }
 
         // check if email exist
         const existingEmail = await Doctor.findOne({ email });
         if(existingEmail) {
-            return res.status(400).json({ message: "Email already exists" })
+            return res.status(400).json({ message: "Email already exists." })
         }
 
         // check if username exist
         const existingUsername = await Doctor.findOne({ username })
         if(existingUsername) {
-            return res.status(400).json({ message: "Username already exists" })
+            return res.status(400).json({ message: "Username already exists." })
         }
 
         // hash password
@@ -42,11 +42,11 @@ exports.createDoctor = async (req, res) => {
         const { password: _, ...doctorData } = savedDoctor.toObject()
 
         res.status(201).json({
-            message: "Doctor created successfully",
+            message: "Doctor created successfully.",
             data: doctorData
         })
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
@@ -62,7 +62,7 @@ exports.readAllDoctor = async (req, res) => {
             data: doctors
         })
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
@@ -77,11 +77,11 @@ exports.readOneDoctor = async (req, res) => {
         }
 
         res.status(200).json({
-            message: "Doctor retrieved Successfully",
+            message: "Doctor retrieved Successfully.",
             data: doctor
         })
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
@@ -106,16 +106,16 @@ exports.updateDoctor = async ( req, res ) => {
         ).select("-password")
 
         if(!updatedDoctor) {
-            return res.status(404).json({ message: "Doctor not found" })
+            return res.status(404).json({ message: "Doctor not found." })
         }
 
         res.status(200).json({
-            message: "Update Successful",
+            message: "Update Successful.",
             data: updatedDoctor
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error: error.message })
+        res.status(500).json({ message: "Server Error.", error: error.message })
     }
 }
 
@@ -129,15 +129,15 @@ exports.deactivateDoctor = async (req, res) => {
         ).select("-password")
 
         if(!deactivateDoctor) {
-            return res.status(404).json({ message: "Doctor not found" })
+            return res.status(404).json({ message: "Doctor not found." })
         }
 
         res.status(200).json({
-            message: "Deactivate Doctor Successfully",
+            message: "Deactivate doctor Successfully.",
             data: deactivateDoctor
         })
     } catch (error) {
-        return res.status(500).json({ message: "Server error", error: error.message })
+        return res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 

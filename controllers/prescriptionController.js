@@ -54,7 +54,7 @@ exports.readPrescriptions = async (req, res) => {
 
             // return 200 with data
             res.status(200).json({
-                message: "Prescriptions retrieved successfully",
+                message: "Prescriptions retrieved successfully.",
                 data: prescription
             })
     } catch (error) {
@@ -84,8 +84,17 @@ exports.readOnePrescription = async (req, res) => {
                 return res.status(404).json({ message: "Prescription not found." })
             }
 
+            // verify role
+            if(req.user.role === "patient" && prescription.diagnosis.appointment.patient._id.toString() !== req.user.id) {
+                return res.status(403).json({ message: "Forbidden access." })
+            }
+
+            if(req.user.role === "doctor" && prescription.diagnosis.appointment.doctor._id.toString() !== req.user.id) {
+                return res.status(403).json({ message: "Forbidden access." })
+            }
+
             res.status(200).json({
-                message: "Prescription retrieved successfully",
+                message: "Prescription retrieved successfully.",
                 data: prescription
             })
     } catch (error) {

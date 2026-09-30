@@ -8,19 +8,19 @@ exports.createPatient = async ( req, res ) => {
 
         // Validation
         if(!firstname || !lastname || !email || !username || !password || !contactNumber || !dateOfBirth) {
-            return res.status(400).json({ message: "Missing Field Required" })
+            return res.status(400).json({ message: "Missing field required." })
         }
 
         // check if email already exist
         const existingEmail = await Patient.findOne({ email });
         if(existingEmail) {
-            return res.status(400).json({ message: "Email already exist" })
+            return res.status(400).json({ message: "Email already exists." })
         }
 
         // check if username already exist
         const existingUsername = await Patient.findOne({ username })
         if(existingUsername) {
-            return res.status(400).json({ message: "Username already exist" })
+            return res.status(400).json({ message: "Username already exists." })
         }
 
         const salt = await bcrypt.genSalt(10)
@@ -41,12 +41,12 @@ exports.createPatient = async ( req, res ) => {
         const { password: _, ...patientData } = savedPatient.toObject()
 
         res.status(201).json({
-            message: "Patient created successfully",
+            message: "Patient created successfully.",
             data: patientData
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message  })
+        res.status(500).json({ message: "Server error.", error: error.message  })
     }
 }
 
@@ -58,7 +58,7 @@ exports.readPatients = async ( req, res ) => {
             .select("-password");
         
         res.status(200).json({
-            message: "Patients retrieved successfully",
+            message: "Patients retrieved successfully.",
             data: patients
         })
     } catch (error) {
@@ -75,12 +75,12 @@ exports.readOnePatient = async ( req, res ) => {
 
         // check if patient exists
         if(!patient) {
-            return res.status(404).json({ message: "Patient not found" })
+            return res.status(404).json({ message: "Patient not found." })
         }
 
         // return response
         res.status(200).json({ 
-            message: "Patient retrieved successfullt",
+            message: "Patient retrieved successfully.",
             data: patient
         })
 
@@ -110,17 +110,17 @@ exports.updatePatient = async ( req, res ) => {
 
         // check if patient exists
         if(!updatedPatient) {
-            return res.status(404).json({ message: "Patient not found" })
+            return res.status(404).json({ message: "Patient not found." })
         }
 
         // return response
         res.status(200).json({
-            message: "Update successful",
+            message: "Update successful.",
             data: updatedPatient
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
@@ -136,17 +136,17 @@ exports.deactivatePatient = async ( req, res ) => {
 
         // check if patient exists
         if(!deactivatePatient) {
-            return res.status(404).json({ message: "Patient not found" })
+            return res.status(404).json({ message: "Patient not found." })
         }
         
         // return response
         res.status(200).json({ 
-            message: "Deactivated Patient Successfully",
+            message: "Deactivated patient successfully.",
             data: deactivatePatient
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
@@ -163,7 +163,7 @@ exports.getMe = async ( req, res ) => {
 
         // return success login
         res.status(200).json({
-            message: "Profile retrieved successfully",
+            message: "Profile retrieved successfully.",
             data: patient
         })
 

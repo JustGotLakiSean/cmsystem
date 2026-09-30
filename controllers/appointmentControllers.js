@@ -2,6 +2,7 @@ const Appointment = require('../models/Appointment');
 const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient')
 
+// create appointment
 exports.createAppointment = async (req, res) => {
     try {
         const { doctor, patient, appointmentDate, reason } = req.body;
@@ -20,9 +21,10 @@ exports.createAppointment = async (req, res) => {
         // check if Patient exist
         const patientExist = await Patient.findById(patient)
         if(!patientExist) {
-            return res.status(404).json({ message: "Patient not found" })
+            return res.status(404).json({ message: "Patient not found." })
         }
 
+        // create appointment object
         const appointment = new Appointment({
             doctor,
             patient,
@@ -30,31 +32,19 @@ exports.createAppointment = async (req, res) => {
             reason
         });
 
+        // saved appointment
         const savedAppointment = await appointment.save();
         res.status(201).json({
-            message: "Appointment created successfully",
+            message: "Appointment created successfully.",
             data: savedAppointment
         })
+
     } catch (error) {
         return res.status(500).json({ message: "Server error.", error: error.message })
     }
 }
 
-/*
-- readAppointment - get all appointment
-Pseudocode:
-
-1. Find all appointments
-2. Populate doctor field (hide password)
-3. Populate patient field (hide password)
-4. Return response
-
-ex.
-Appointment.find()
-  .populate("doctor", "-password")
-  .populate("patient", "-password")
-*/
-
+// read all appointment
 exports.readAppointment = async ( req, res ) => {
     try {
         const appointment = await Appointment.find()
@@ -72,18 +62,30 @@ exports.readAppointment = async ( req, res ) => {
 
 exports.readOneAppointment = async (req , res) => {
     try {
+        // get the appointment
         const appointment = await Appointment.findById(req.params.id)
             .populate("doctor", "-password")
             .populate("patient", "-password");
-
+        
+        // check if appointment exist
         if(!appointment) {
             return res.status(404).json({ message: "Appointment not found." })
         }
 
+        // verify role
+        if(req.user.role === "patient" && appointment.patient._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Forbidden access." });
+        }
+
+        if(req.user.role === "doctor" && appointment.doctor._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Forbidden access." })
+        }
+
         res.status(200).json({
-            message: "Appointment retrieved successfully",
+            message: "Appointment retrieved successfully.",
             data: appointment
         })
+
     } catch (error) {
         return res.status(500).json({ message: "Server error.", error: error.message })
     }
@@ -92,6 +94,7 @@ exports.readOneAppointment = async (req , res) => {
 // update appointment
 exports.updateAppointment = async (req , res) => {
     try {
+        // get request from the user
         const { appointmentDate, reason, status } = req.body;
 
         // update appointment by id
@@ -112,7 +115,7 @@ exports.updateAppointment = async (req , res) => {
 
         // return response
         res.status(200).json({
-            message: "Appointment updated successfully",
+            message: "Appointment updated successfully.",
             data: updatedAppointment
         })
     } catch (error) {
@@ -135,7 +138,7 @@ exports.cancelAppointment = async (req, res) => {
         }
 
         res.status(200).json({
-            message: "Appointment cancelled successfuly",
+            message: "Appointment cancelled successfuly.",
             data: cancelledAppointment
         })
     } catch (error) {
